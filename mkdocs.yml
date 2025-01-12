@@ -1,0 +1,76 @@
+site_name: GameDev Notebook
+
+repo_name: Furo 博客
+repo_url: https://furo.fun
+
+
+copyright: Copyright &copy; 2024 - 2025  Furo 如梦似幻
+markdown_extensions:
+  - admonition        # 信息块
+  - attr_list         # 属性列表
+  - footnotes         # 脚注
+  - tables            # 表格
+  - md_in_html        # HTML 中的 Markdown
+  - toc:
+      title: Toc
+      permalink: true
+      permalink_title: 悬停加载
+      toc_depth: 6
+  - pymdownx.tasklist:      # 任务列表
+      custom_checkbox: true
+  - pymdownx.highlight: # 语法高亮
+      anchor_linenums: true
+      line_spans: spans
+      pygments_lang_class: true
+  - pymdownx.inlinehilite   # 内联语法高亮
+  - pymdownx.snippets
+  - pymdownx.critic         # 启用：突出显示文档中添加、删除或更新的部分
+  - pymdownx.caret          # 启用：下划线 ^^、上标 ^
+  - pymdownx.keys           # 启用：键盘键 ++
+  - pymdownx.mark           # 启用：突出显示 == 
+  - pymdownx.tilde          # 启用：删除线 ~~、下标 ~
+  - pymdownx.details        # 启用：可折叠的 Admonition
+  - pymdownx.superfences    # 代码块
+  - pymdownx.blocks.caption
+  - pymdownx.emoji:         # 表情包
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:       # 自定义图标集
+          - overrides/.icons
+
+plugins:
+  - search
+  - awesome-pages
+  - glightbox
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.indexes
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - search.suggest
+    - navigation.footer
+    - content.tooltips
+    - content.tabs.link
+    - content.code.annotate
+    - content.code.copy
+  icon:
+    annotation: material/arrow-right-circle
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
