@@ -1,0 +1,2916 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../API%20-%20EditorInterface%E8%AF%A6%E8%A7%A3/">
+      
+      
+        <link rel="next" href="../API%20-%20Editor%E7%9B%B8%E5%85%B3/">
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>API EditorPlugin详解 - GameDev Notebook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+  
+  
+  
+  
+  <style>:root{--md-annotation-icon:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg>');}</style>
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../../.." title="GameDev Notebook" class="md-header__button md-logo" aria-label="GameDev Notebook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GameDev Notebook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API   EditorPlugin详解
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://furo.fun" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Furo 博客
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="GameDev Notebook" class="md-nav__button md-logo" aria-label="GameDev Notebook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GameDev Notebook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://furo.fun" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Furo 博客
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to MkDocs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    About
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Content
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Content
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    AI
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            AI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/RVO%EF%BC%88Reciprocal%20Velocity%20Obstacles%EF%BC%89%E9%9A%9C%E7%A2%8D%E7%89%A9%E8%A7%84%E9%81%BF%E7%AE%97%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RVO（Reciprocal Velocity Obstacles）障碍物规避算法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/%E5%8A%BF%E5%87%BD%E6%95%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    势函数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/%E6%B5%81%E5%9C%BA%E5%AF%BB%E8%B7%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流场寻路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    神经网络
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/%E7%BE%A4%E8%81%9A%E7%AE%97%E6%B3%95%20%EF%BC%88%E4%BB%A52D%E4%B8%8A%E5%B8%9D%E8%A7%86%E8%A7%92%E4%B8%BA%E4%BE%8B%EF%BC%89/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    群聚算法 （以2D上帝视角为例）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../AI/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    遗传算法
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Design
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Design
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Design/%E3%80%90%E8%82%89%E9%B8%BD%E6%B8%B8%E6%88%8F%E3%80%91%E4%BB%8E%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E8%A7%92%E5%BA%A6%E5%91%8A%E8%AF%89%E4%BD%A0%E8%82%89%E9%B8%BD%E6%B8%B8%E6%88%8F%E4%B8%BA%E4%BD%95%E8%AE%A9%E4%BD%A0%E7%8E%A9%E4%B8%8D%E4%B8%8B%E5%8E%BB/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    【肉鸽游戏】从游戏设计角度告诉你肉鸽游戏为何让你玩不下去
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Design/%E6%9C%AA%E5%91%BD%E5%90%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    未命名
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Design/%E7%94%B5%E5%AD%90%E6%B8%B8%E6%88%8F%E7%9A%84%E7%BB%8F%E6%B5%8E%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    电子游戏的经济系统是如何设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Godot
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Godot
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_1" id="__nav_3_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Android
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/1.%E5%AF%BC%E5%87%BA%E5%AE%89%E5%8D%93%E7%AB%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.导出安卓端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/10.%E5%88%9B%E5%BB%BAApp%E5%86%85%E8%B4%AD%E5%8A%9F%E8%83%BD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.创建App内购功能
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/11.%E4%BB%A5Apk%E5%92%8CAAB%E6%A0%BC%E5%BC%8F%E5%AF%BC%E5%87%BA%E5%AE%89%E5%8D%93%E7%AB%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.以Apk和AAB格式导出安卓端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/12.%E6%8E%A5%E5%85%A5Facebook%20Ads/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.接入Facebook Ads
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/13.%E5%AE%9E%E7%8E%B0%E6%96%87%E6%9C%AC%E8%BD%AC%E8%AF%AD%E9%9F%B3%E4%B8%8E%E8%AF%AD%E8%A8%80%E8%BD%AC%E6%96%87%E6%9C%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.实现文本转语音与语言转文本
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/14.%E6%8E%A5%E5%85%A5%E8%B0%B7%E6%AD%8C%E6%B8%B8%E6%88%8F%E6%9C%8D%E5%8A%A1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14.接入谷歌游戏服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/15.%E5%88%B6%E4%BD%9CGodot%20Android%E6%8F%92%E4%BB%B6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15.制作Godot Android插件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/2.%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E6%A0%8F%E6%8E%A8%E9%80%81/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.本地消息栏推送
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/3.%E9%83%A8%E7%BD%B2AdMob%E5%B9%BF%E5%91%8A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.部署AdMob广告
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/4.%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%89%E5%8D%93%E6%A8%A1%E5%9D%97/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.创建自定义安卓模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/5.%E5%AF%BC%E5%85%A5%E7%9B%B8%E6%9C%BA%E5%9B%BE%E7%89%87/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.导入相机图片
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/6.%E6%8E%A5%E5%85%A5Firebase/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.接入Firebase
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/7.%E4%BD%BF%E7%94%A8FireBase%E5%88%9B%E5%BB%BA%E7%99%BB%E5%BD%95%E9%A1%B5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.使用FireBase创建登录页
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/8.%E4%BD%BF%E7%94%A8Android%20Share%E4%B8%8E%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%85%B1%E4%BA%AB%E6%96%87%E6%9C%AC%E5%92%8C%E5%9B%BE%E5%83%8F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.使用Android Share与其他应用程序共享文本和图像
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Android/9.%E8%8E%B7%E5%8F%96%E7%94%A8%E6%88%B7%E4%BD%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.获取用户位置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_2" id="__nav_3_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Function
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Function
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20%20-%20%E5%88%B6%E4%BD%9C%E9%9F%B3%E9%A2%91%E5%85%89%E8%B0%B1%E5%88%86%E6%9E%90%E5%8A%A8%E6%95%88/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能    制作音频光谱分析动效
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%202DRPG%E5%B8%B8%E7%94%A8%E8%84%9A%E6%9C%AC%E4%B8%8E%E6%80%9D%E8%B7%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   2DRPG常用脚本与思路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%202D%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%92%E8%89%B2%E6%8D%A2%E8%A3%85%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   2D自定义角色换装系统
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20Light2D%E5%81%9A%E5%9B%BE%E5%BD%A2%E9%81%AE%E7%BD%A9%EF%BC%8C%E5%92%8C%E7%81%AF%E5%85%89%E9%98%B4%E5%BD%B1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   Light2D做图形遮罩，和灯光阴影
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20%E4%BF%9D%E5%AD%98%E5%92%8C%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   保存和加载数据
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20%E5%88%B6%E4%BD%9C%E6%8A%80%E8%83%BD%E8%8A%82%E7%82%B9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   制作技能节点
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   基础
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20%E6%89%93%E5%87%BB%E6%84%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   打击感的设计与实现
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E5%8A%9F%E8%83%BD%20-%20%E6%97%8B%E8%BD%AC%E5%88%B0%E7%9B%AE%E6%A0%87%E4%BD%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    功能   旋转到目标位置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Function/%E6%8A%9B%E7%89%A9%E7%BA%BF%E7%9A%84%E5%AE%9E%E7%8E%B0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    抛物线的实现
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_3" id="__nav_3_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Misc
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Misc
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/API%20-%20Resource%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resource 资源详解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/API%20-%20%E5%BF%AB%E9%80%9F%E8%A7%A3%E9%87%8A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API   快速解释
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Godot%204%20GDScript/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Godot 4 GDScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/%E6%98%93%E9%94%99%E8%AE%B0%E5%BD%95/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    易错记录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/%E7%BB%93%E7%82%B9%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结点基础
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    语法基础
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_3_7" id="__nav_3_3_3_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Other
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_3_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Other
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/2D%20%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%98%E5%9B%BE%28draw%E7%9A%84%E4%BD%BF%E7%94%A8%29/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2D 中的自定义绘图(draw的使用)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/2D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2D
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/Canvas%20layers%20%E7%94%BB%E5%B8%83%E5%B1%82/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Canvas layers 画布层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/GDScript%202.0%20%E6%96%B0%E5%A2%9E%E4%B8%8E%E5%8F%98%E5%8C%96/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GDScript
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/Godot%20%E5%AF%BC%E5%87%BA%E4%B8%BAPSVITA%E7%AB%AF/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Godot 导出为PSVITA端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/Meta%E4%BF%A1%E6%81%AF%E7%9A%84%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Meta信息的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/Viewport%20%E5%92%8C%20Canvas%E5%8F%98%E6%8D%A2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Viewport 和 Canvas变换
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Misc/Other/%E7%BD%91%E7%BB%9CAPi%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    网络APi详解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_4" id="__nav_3_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Plugin
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Plugin
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_4_1" id="__nav_3_3_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    插件制作
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_3_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            插件制作
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API%20-%20EditorInterface%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API   EditorInterface详解
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    API   EditorPlugin详解
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    API   EditorPlugin详解
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Toc">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Toc
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      描述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚方法,主要对插件的一些设置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      实方法-编辑器扩展
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实方法-编辑器扩展">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      添加操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      删除操作
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      信号
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      枚举
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API%20-%20Editor%E7%9B%B8%E5%85%B3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EditorExportPlugin
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%20-%20%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    插件制作   插件制作流程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%BC%96%E8%BE%91%E5%99%A8Inspector%E6%89%A9%E5%B1%95%20-%20%20EditorInspectorPlugin/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    编辑器Inspector扩展    EditorInspectorPlugin
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_5" id="__nav_3_3_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    SFX
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            SFX
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3_5_1" id="__nav_3_3_5_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Shader
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_3_3_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Shader
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SFX/Shader/Shader%202D%E6%A8%A1%E6%8B%9F3D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shader 2D模拟3D
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SFX/Shader/Shader%20%E6%A0%91%E6%9C%A8%E6%A4%8D%E7%89%A9%E6%91%87%E6%91%86/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Shader 树木植物摇摆
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SFX/Shader/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    未命名 1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../SFX/Shader/%E6%9C%AA%E5%91%BD%E5%90%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    未命名
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Toc">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Toc
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      描述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      方法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚方法,主要对插件的一些设置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      实方法-编辑器扩展
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实方法-编辑器扩展">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      添加操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      删除操作
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      信号
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      枚举
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>API   EditorPlugin详解</h1>
+
+<h3 id="_1">描述<a class="headerlink" href="#_1" title="悬停加载">&para;</a></h3>
+<p>编辑器使用插件来扩展功能。最常见的插件类型是那些编辑给定节点或资源类型、导入插件和导出插件的插件。</p>
+<h3 id="_2">方法<a class="headerlink" href="#_2" title="悬停加载">&para;</a></h3>
+<h4 id="_3">虚方法,主要对插件的一些设置<a class="headerlink" href="#_3" title="悬停加载">&para;</a></h4>
+<ul>
+<li>void apply_changes() virtual<ul>
+<li>当编辑器即将保存项目、切换到另一个标签页卡(Tab)等时，会调用此方法。它要求插件应用任何挂起的状态更改以确保一致性。</li>
+<li>例如，在着色器编辑器中使用此选项可以让插件知道它必须将用户编写的着色器代码应用于对象。</li>
+</ul>
+</li>
+<li>bool build() virtual<ul>
+<li>当编辑器即将运行项目时，将调用此方法。插件可以在项目运行之前执行所需的操作。</li>
+</ul>
+</li>
+<li>void clear() virtual<ul>
+<li>清除所有状态并将正在编辑的对象重置为零。这可确保插件不会继续编辑当前存在的节点，或编辑错误场景中的节点。</li>
+</ul>
+</li>
+<li>void disable_plugin() virtual<ul>
+<li>当用户在“项目设置”窗口的“插件”选项卡中禁用EditorPlugin时，由引擎调用。</li>
+</ul>
+</li>
+<li>void enable_plugin() virtual<ul>
+<li>当用户在“项目设置”窗口的“插件”选项卡中启用EditorPlugin时，由引擎调用。</li>
+</ul>
+</li>
+<li>void edit(object: Object) virtual<ul>
+<li>此函数用于编辑特定对象类型（节点或资源）的插件。它要求编辑器编辑给定的对象。</li>
+</ul>
+</li>
+<li>void forward_canvas_draw_over_viewport(overlay: Control) virtual<ul>
+<li>更新2D编辑器的视口时由引擎调用。对图形使用覆盖控件。可以通过调用update_overlays（）手动更新视口。
+<div class="language-js highlight"><pre><span></span><code><span id="spans-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_canvas_draw_over_viewport</span><span class="p">(</span><span class="nx">overlay</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Draw</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">circle</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">cursor</span><span class="w"> </span><span class="nx">position</span><span class="p">.</span>
+</span><span id="spans-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">overlay</span><span class="p">.</span><span class="nx">draw_circle</span><span class="p">(</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">get_local_mouse_position</span><span class="p">(),</span><span class="w"> </span><span class="mf">64</span><span class="p">,</span><span class="w"> </span><span class="nx">Color</span><span class="p">.</span><span class="nx">white</span><span class="p">)</span>
+</span><span id="spans-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="spans-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_canvas_gui_input</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="o">:</span>
+</span><span id="spans-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">Redraw</span><span class="w"> </span><span class="nx">viewport</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">cursor</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">moved</span><span class="p">.</span>
+</span><span id="spans-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="nx">update_overlays</span><span class="p">()</span>
+</span><span id="spans-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>void forward_canvas_force_draw_over_viewport(overlay: Control) virtual<ul>
+<li>此方法与上方法上绘制相同，只是它在所有对象的顶部绘制。当您需要一个额外的图层来显示其他任何内容时，此功能非常有用。
+您需要使用set_force_draw_over_forwarding_enabled（）启用此方法的调用。</li>
+</ul>
+</li>
+<li>bool forward_canvas_gui_input(event: InputEvent) virtual<ul>
+<li>当当前编辑的场景中存在根节点时调用，将实现handles（），并在2D视口中发生InputEvent。如果返回真 EditorPlugin使用该事件，则截取InputEvent，否则将事件转发给其他编辑器类。例子：
+<div class="language-js highlight"><pre><span></span><code><span id="spans-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="err">#</span><span class="w"> </span><span class="nx">Prevents</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">InputEvent</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">reach</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">Editor</span><span class="w"> </span><span class="nx">classes</span>
+</span><span id="spans-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_canvas_gui_input</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">forward</span>
+</span></code></pre></div>
+必须返回false才能将InputEvent转发到其他编辑器类。例子：
+<div class="language-js highlight"><pre><span></span><code><span id="spans-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="err">#</span><span class="w"> </span><span class="nx">Consumes</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">forwards</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">InputEvent</span><span class="w"> </span><span class="nx">types</span>
+</span><span id="spans-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_canvas_gui_input</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="spans-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="o">:</span>
+</span><span id="spans-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">forward</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>void forward_spatial_draw_over_viewport(overlay: Control) virtual<ul>
+<li>Called by the engine when the 3D editor's viewport is updated. Use the overlay Control for drawing. You can update the viewport manually by calling update_overlays().
+<div class="language-js highlight"><pre><span></span><code><span id="spans-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_spatial_draw_over_viewport</span><span class="p">(</span><span class="nx">overlay</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Draw</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">circle</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">cursor</span><span class="w"> </span><span class="nx">position</span><span class="p">.</span>
+</span><span id="spans-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nx">overlay</span><span class="p">.</span><span class="nx">draw_circle</span><span class="p">(</span><span class="nx">overlay</span><span class="p">.</span><span class="nx">get_local_mouse_position</span><span class="p">(),</span><span class="w"> </span><span class="mf">64</span><span class="p">)</span>
+</span><span id="spans-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="spans-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_spatial_gui_input</span><span class="p">(</span><span class="nx">camera</span><span class="p">,</span><span class="w"> </span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="o">:</span>
+</span><span id="spans-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="nx">Redraw</span><span class="w"> </span><span class="nx">viewport</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">cursor</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">moved</span><span class="p">.</span>
+</span><span id="spans-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nx">update_overlays</span><span class="p">()</span>
+</span><span id="spans-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>void forward_spatial_force_draw_over_viewport(overlay: Control) virtual<ul>
+<li>This method is the same as forward_spatial_draw_over_viewport(), except it draws on top of everything. Useful when you need an extra layer that shows over anything else.</li>
+<li>You need to enable calling of this method by using set_force_draw_over_forwarding_enabled().</li>
+</ul>
+</li>
+<li>bool forward_spatial_gui_input(camera: Camera, event: InputEvent) virtual<ul>
+<li>Called when there is a root node in the current edited scene, handles() is implemented and an InputEvent happens in the 3D viewport. Intercepts the InputEvent, if return true EditorPlugin consumes the event, otherwise forwards event to other Editor classes. Example:
+<div class="language-js highlight"><pre><span></span><code><span id="spans-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="err">#</span><span class="w"> </span><span class="nx">Prevents</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">InputEvent</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">reach</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">Editor</span><span class="w"> </span><span class="nx">classes</span>
+</span><span id="spans-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_spatial_gui_input</span><span class="p">(</span><span class="nx">camera</span><span class="p">,</span><span class="w"> </span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">forward</span>
+</span><span id="spans-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="spans-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nx">Must</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nx">order</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">forward</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">InputEvent</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">Editor</span><span class="w"> </span><span class="nx">classes</span><span class="p">.</span><span class="w"> </span><span class="nx">Example</span><span class="o">:</span>
+</span><span id="spans-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="spans-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="err">#</span><span class="w"> </span><span class="nx">Consumes</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">forwards</span><span class="w"> </span><span class="nx">other</span><span class="w"> </span><span class="nx">InputEvent</span><span class="w"> </span><span class="nx">types</span>
+</span><span id="spans-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="nx">func</span><span class="w"> </span><span class="nx">forward_spatial_gui_input</span><span class="p">(</span><span class="nx">camera</span><span class="p">,</span><span class="w"> </span><span class="nx">event</span><span class="p">)</span><span class="o">:</span>
+</span><span id="spans-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="spans-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">InputEventMouseMotion</span><span class="o">:</span>
+</span><span id="spans-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="nx">forward</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="spans-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">forward</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>PoolStringArray get_breakpoints() virtual<ul>
+<li>这适用于编辑基于脚本的对象的编辑器。您可以以以下格式返回断点列表（script：line），例如：res://path_to_script.gd:25.</li>
+</ul>
+</li>
+<li>Texture get_plugin_icon() virtual<ul>
+<li>在插件中重写此方法以返回纹理，从而为其提供一个图标。</li>
+<li>对于主屏幕插件，它显示在屏幕顶部“2D”、“3D”、“脚本”和“AssetLib”按钮的右侧。</li>
+<li>理想情况下，插件图标应为白色，背景透明，大小为16x16像素。
+<div class="language-js highlight"><pre><span></span><code><span id="spans-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nx">func</span><span class="w"> </span><span class="nx">get_plugin_icon</span><span class="p">()</span><span class="o">:</span>
+</span><span id="spans-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">You</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">custom</span><span class="w"> </span><span class="nx">icon</span><span class="o">:</span>
+</span><span id="spans-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">preload</span><span class="p">(</span><span class="s2">&quot;res://addons/my_plugin/my_plugin_icon.svg&quot;</span><span class="p">)</span>
+</span><span id="spans-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nx">Or</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">built</span><span class="o">-</span><span class="ow">in</span><span class="w"> </span><span class="nx">icon</span><span class="o">:</span>
+</span><span id="spans-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">get_editor_interface</span><span class="p">().</span><span class="nx">get_base_control</span><span class="p">().</span><span class="nx">get_icon</span><span class="p">(</span><span class="s2">&quot;Node&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;EditorIcons&quot;</span><span class="p">)</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>String get_plugin_name() virtual<ul>
+<li>在插件中重写此方法，以在Godot编辑器中显示插件时提供插件的名称。</li>
+<li>对于主屏幕插件，它显示在屏幕顶部“2D”、“3D”、“脚本”和“AssetLib”按钮的右侧。</li>
+</ul>
+</li>
+<li>void set_state(state: Dictionary) virtual<ul>
+<li>还原get_state（）保存的状态。</li>
+</ul>
+</li>
+<li>Dictionary get_state() virtual<ul>
+<li>获取插件编辑器的状态。这用于保存场景（以便再次打开场景时保持状态）和切换选项卡（以便选项卡返回时可以恢复状态）。</li>
+</ul>
+</li>
+<li>void set_window_layout(layout: ConfigFile) virtual<ul>
+<li>恢复get_window_layout（）保存的插件GUI布局。</li>
+</ul>
+</li>
+<li>void get_window_layout(layout: ConfigFile) virtual<ul>
+<li>获取插件的GUI布局。这用于在调用queue_save_layout（）或更改编辑器布局（例如更改停靠位置）时保存项目的编辑器布局。</li>
+</ul>
+</li>
+<li>bool handles(object: Object) virtual<ul>
+<li>如果插件编辑特定类型的对象（资源或节点），则实现此功能。如果返回true，则将在编辑器请求时调用函数edit（）和make_visible（）。如果您已经声明了forward_canvas_gui_input（）和forward_spatial_gui_input（）方法，这些方法也将被调用。</li>
+</ul>
+</li>
+<li>bool has_main_screen() virtual<ul>
+<li>如果这是一个主屏幕编辑器插件，则返回true（它与2D、3D、脚本和AssetLib一起进入工作区选择器）。    </li>
+</ul>
+</li>
+<li>void make_visible(visible: bool) virtual<ul>
+<li>当请求编辑器变为可见时，将调用此函数。它用于编辑特定对象类型的插件。请记住，您必须手动管理所有编辑器控件的可见性。</li>
+</ul>
+</li>
+<li>void save_external_data() virtual<ul>
+<li>编辑器保存项目后或关闭项目时调用此方法。它要求插件保存已编辑的外部场景/资源。</li>
+</ul>
+</li>
+</ul>
+<h4 id="-">实方法-编辑器扩展<a class="headerlink" href="#-" title="悬停加载">&para;</a></h4>
+<h5 id="_4">添加操作<a class="headerlink" href="#_4" title="悬停加载">&para;</a></h5>
+<ul>
+<li>void add_autoload_singleton(name: String, path: String)<ul>
+<li>将路径处的脚本作为名称添加到autoload_singleton列表中。</li>
+</ul>
+</li>
+<li>ToolButton add_control_to_bottom_panel(control: Control, title: String)<ul>
+<li>将控件添加到底部面板（以及输出、调试、动画等）。返回对添加的按钮的引用。需要时，您可以隐藏/显示按钮。当您的插件被停用时，请确保使用remove_control_from_bottom_panel（）删除自定义控件，并使用Node.queue_free()。</li>
+</ul>
+</li>
+<li>void add_control_to_container(container:CustomControlContainer, control: Control)<ul>
+<li>将自定义控件添加到容器（请参见CustomControlContainer）。有许多位置可以在编辑器UI中添加自定义控件。</li>
+<li>请记住，您必须自己管理自定义控件的可见性（并可能在添加后将其隐藏）。</li>
+<li>当您的插件被停用时，请确保使用remove_control_from_container（）删除自定义控件，并使用Node.queue_free()。</li>
+</ul>
+</li>
+<li>void add_control_to_dock(slot: DockSlot, control: Control)<ul>
+<li>将控件添加到特定的dock插槽（有关选项，请参见DockSlot）。</li>
+<li>如果dock被重新定位，并且只要插件处于活动状态，编辑器就会在以后的会话中保存dock位置。</li>
+<li>当您的插件被停用时，请确保使用remove_control_from_docks（）删除自定义控件，并使用Node.queue_free()。</li>
+</ul>
+</li>
+<li>void add_custom_type(type: String, base: String, script: Script, icon: Texture)<ul>
+<li>添加自定义类型，该类型将显示在节点或资源列表中。可以选择传递图标。</li>
+<li>选择给定节点或资源时，将实例化基本类型（即"Spatial", "Control", "Resource），然后加载脚本并将其设置为此对象。</li>
+<li>你可以使用virtual方法 handles()来检查是否正在编辑自定义对象。或者通过使用is关键字，</li>
+<li>在运行时，这将是一个带有脚本的简单对象，因此不需要调用此函数。</li>
+</ul>
+</li>
+<li>void add_import_plugin(importer: EditorImportPlugin)<ul>
+<li>注册一个新的EditorImportPlugin。导入插件用于将自定义和不支持的资产作为自定义资源类型导入。</li>
+<li>注意：如果要导入自定义三维资源格式，请改用add_scene_import_plugin()代替使用</li>
+<li>有关如何注册插件的示例，请参见add_inspector_plugin（）。</li>
+</ul>
+</li>
+<li>void add_inspector_plugin(plugin: EditorInspectorPlugin)<ul>
+<li>注册一个新的 EditorInspectorPlugin。Inspector插件用于扩展EditorInspector，并为对象的属性提供自定义配置工具。</li>
+<li>注意：禁用EditorPlugin以防止泄漏和意外行为时，请始终使用remove_inspector_plugin（）删除已注册的 EditorInspectorPlugin。
+<div class="language-js highlight"><pre><span></span><code><span id="spans-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">MyInspectorPlugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">preload</span><span class="p">(</span><span class="s2">&quot;res://addons/your_addon/path/to/your/script.gd&quot;</span><span class="p">)</span>
+</span><span id="spans-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">var</span><span class="w"> </span><span class="nx">inspector_plugin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MyInspectorPlugin</span><span class="p">.</span><span class="ow">new</span><span class="p">()</span>
+</span><span id="spans-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="spans-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nx">func</span><span class="w"> </span><span class="nx">_enter_tree</span><span class="p">()</span><span class="o">:</span>
+</span><span id="spans-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nx">add_inspector_plugin</span><span class="p">(</span><span class="nx">inspector_plugin</span><span class="p">)</span>
+</span><span id="spans-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="spans-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nx">func</span><span class="w"> </span><span class="nx">_exit_tree</span><span class="p">()</span><span class="o">:</span>
+</span><span id="spans-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nx">remove_inspector_plugin</span><span class="p">(</span><span class="nx">inspector_plugin</span><span class="p">)</span>
+</span></code></pre></div></li>
+</ul>
+</li>
+<li>void add_scene_import_plugin(scene_importer: EditorSceneImporter)
+注册一个新的EditorSceneImporter。场景导入器用于将自定义3d asset格式导入为场景。</li>
+<li>void add_spatial_gizmo_plugin(plugin:EditorSpatialGizmoPlugin)
+注册一个新的编辑器PatialigzMoplugin。Gizmo插件用于将自定义Gizmo添加到空间对象的三维预览视口中。
+有关如何注册插件的示例，请参见add_inspector_plugin（）。</li>
+<li>void add_tool_menu_item(name: String, handler: Object, callback: String, ud: Variant = null)
+添加一个自定义菜单项目到到Project&gt;Tools，当用户激活该菜单项时，该菜单项使用一个参数ud调用处理程序实例上的回调。</li>
+<li>void add_tool_submenu_item(name: String, submenu: Object)
+在“ Project &gt; Tools &gt; name”下添加自定义子菜单。子菜单应该是类PopupMenu的对象。应使用remove_tool_menu_item(name)清理此子菜单。</li>
+</ul>
+<hr />
+<h5 id="_5">删除操作<a class="headerlink" href="#_5" title="悬停加载">&para;</a></h5>
+<ul>
+<li>void remove_autoload_singleton(name: String)
+Removes an Autoload name from the list.</li>
+<li>void remove_control_from_bottom_panel(control: Control)
+Removes the control from the bottom panel. You have to manually Node.queue_free() the control.</li>
+<li>void remove_control_from_container(container: CustomControlContainer, control: Control)
+Removes the control from the specified container. You have to manually Node.queue_free() the control.</li>
+<li>void remove_control_from_docks(control: Control)
+Removes the control from the dock. You have to manually Node.queue_free() the control.</li>
+<li>void remove_custom_type(type: String)
+Removes a custom type added by add_custom_type().</li>
+<li>void remove_export_plugin(plugin: EditorExportPlugin)
+Removes an export plugin registered by add_export_plugin().</li>
+<li>void remove_import_plugin(importer: EditorImportPlugin)
+Removes an import plugin registered by add_import_plugin().</li>
+<li>void remove_inspector_plugin(plugin: EditorInspectorPlugin)
+Removes an inspector plugin registered by add_import_plugin()</li>
+<li>void remove_scene_import_plugin(scene_importer: EditorSceneImporter)
+Removes a scene importer registered by add_scene_import_plugin().</li>
+<li>void remove_spatial_gizmo_plugin(plugin: EditorSpatialGizmoPlugin)
+Removes a gizmo plugin registered by add_spatial_gizmo_plugin().</li>
+<li>void remove_tool_menu_item(name: String)
+Removes a menu name from Project &gt; Tools.</li>
+</ul>
+<h4 id="_6">其他<a class="headerlink" href="#_6" title="悬停加载">&para;</a></h4>
+<ul>
+<li>EditorInterface get_editor_interface()<ul>
+<li>返回EditorInterface对象，该对象使您可以控制Godot编辑器的窗口及其功能。</li>
+</ul>
+</li>
+<li>ScriptCreateDialog get_script_create_dialog()<ul>
+<li>获取用于制作脚本的编辑器对话框。</li>
+<li>注意：用户可以在使用前进行配置。</li>
+<li>警告：删除和释放此节点将使编辑器的一部分无效，并可能导致崩溃。</li>
+</ul>
+</li>
+<li>UndoRedo get_undo_redo()<ul>
+<li>获取撤消/重做对象。编辑器中的大多数操作都是可撤消的，因此请使用此对象确保在值得的情况下执行此操作。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>void hide_bottom_panel()<ul>
+<li>最小化底部面板。</li>
+</ul>
+</li>
+<li>void make_bottom_panel_item_visible(item: Control)<ul>
+<li>使底部面板中的特定项目可见。</li>
+</ul>
+</li>
+<li>void queue_save_layout() const<ul>
+<li>清除保存项目的编辑器布局</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>void set_force_draw_over_forwarding_enabled()<ul>
+<li>启用 forward_canvas_force_draw_over_viewport() for the 2D editor 和 forward_spatial_force_draw_over_viewport() for the 3D editor when their viewports are updated</li>
+<li>你只需要调用这个方法一次，它将永久地为这个插件工作。</li>
+</ul>
+</li>
+<li>void set_input_event_forwarding_always_enabled()<ul>
+<li>如果您始终希望从forward_spatial_gui_input() 内的3D视图屏幕接收输入，请使用此方法。如果插件希望在场景中使用光线投射，那么它可能特别有用。</li>
+</ul>
+</li>
+<li>int update_overlays() const<ul>
+<li>更新二维和三维编辑器视口的覆盖。导致以下方法被调用forward_canvas_draw_over_viewport（）、forward_canvas_force_draw_over_viewport（）、forward_spatial_draw_over_viewport（）和forward_spatial_force_draw_over_viewport（）。</li>
+</ul>
+</li>
+</ul>
+<h3 id="_7">信号<a class="headerlink" href="#_7" title="悬停加载">&para;</a></h3>
+<ul>
+<li>main_screen_changed(screen_name: String)<ul>
+<li>Emitted when user changes the workspace (2D, 3D, Script, AssetLib). Also works with custom screens defined by plugins.</li>
+</ul>
+</li>
+<li>resource_saved(resource: Resource)</li>
+<li>scene_changed(scene_root: Node)<ul>
+<li>Emitted when the scene is changed in the editor. The argument will return the root node of the scene that has just become active. If this scene is new and empty, the argument will be null.</li>
+</ul>
+</li>
+<li>scene_closed(filepath: String)<ul>
+<li>Emitted when user closes a scene. The argument is file path to a closed scene.</li>
+</ul>
+</li>
+</ul>
+<h3 id="_8">枚举<a class="headerlink" href="#_8" title="悬停加载">&para;</a></h3>
+<ul>
+<li>enum  CustomControlContainer:
+● CONTAINER_TOOLBAR = 0  <br />
+● CONTAINER_SPATIAL_EDITOR_MENU = 1  <br />
+● CONTAINER_SPATIAL_EDITOR_SIDE_LEFT = 2 <br />
+● CONTAINER_SPATIAL_EDITOR_SIDE_RIGHT = 3  <br />
+● CONTAINER_SPATIAL_EDITOR_BOTTOM = 4  <br />
+● CONTAINER_CANVAS_EDITOR_MENU = 5<br />
+● CONTAINER_CANVAS_EDITOR_SIDE_LEFT = 6 <br />
+● CONTAINER_CANVAS_EDITOR_SIDE_RIGHT = 7  <br />
+● CONTAINER_CANVAS_EDITOR_BOTTOM = 8  <br />
+● CONTAINER_PROPERTY_EDITOR_BOTTOM = 9  <br />
+● CONTAINER_PROJECT_SETTING_TAB_LEFT = 10  <br />
+● CONTAINER_PROJECT_SETTING_TAB_RIGHT = 11    </li>
+<li>enum  DockSlot:
+● DOCK_SLOT_LEFT_UL = 0 <br />
+● DOCK_SLOT_LEFT_BL = 1  <br />
+● DOCK_SLOT_LEFT_UR = 2 <br />
+● DOCK_SLOT_LEFT_BR = 3  <br />
+● DOCK_SLOT_RIGHT_UL = 4<br />
+● DOCK_SLOT_RIGHT_BL = 5 <br />
+● DOCK_SLOT_RIGHT_UR = 6 <br />
+● DOCK_SLOT_RIGHT_BR = 7 <br />
+● DOCK_SLOT_MAX = 8  –  Represents the size of the DockSlot enum.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../API%20-%20EditorInterface%E8%AF%A6%E8%A7%A3/" class="md-footer__link md-footer__link--prev" aria-label="上一页: API   EditorInterface详解">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                API   EditorInterface详解
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../API%20-%20Editor%E7%9B%B8%E5%85%B3/" class="md-footer__link md-footer__link--next" aria-label="下一页: EditorExportPlugin">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                EditorExportPlugin
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2025  Furo 如梦似幻
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../../../..", "features": ["navigation.indexes", "navigation.instant", "navigation.instant.progress", "navigation.sections", "search.suggest", "navigation.footer", "content.tooltips", "content.tabs.link", "content.code.annotate", "content.code.copy"], "search": "../../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
